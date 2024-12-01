@@ -42,3 +42,82 @@ getUserData((err, user) => {
     });
 });
 
+// 3. Using Promises
+function getUserDataPromise() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (Math.random() > 0.1) {
+                resolve(userData);
+            } else {
+                reject("Error fetching user data");
+            }
+        }, 1000);
+    });
+}
+
+function getUserTasksPromise(userId) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (Math.random() > 0.1) {
+                const tasks = tasksData.filter(task => task.userId === userId);
+                resolve(tasks);
+            } else {
+                reject("Error fetching tasks");
+            }
+        }, 1000);
+    });
+}
+
+// Invoke using promises
+getUserDataPromise()
+    .then(user => {
+        console.log("User:", user);
+        return getUserTasksPromise(user.id);
+    })
+    .then(tasks => {
+        console.log("Tasks:", tasks);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+// 4. Using Async / Await
+function getUserDataAsync() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (Math.random() > 0.1) {
+                resolve(userData);
+            } else {
+                reject("Error fetching user data");
+            }
+        }, 1000);
+    });
+}
+
+function getUserTasksAsync(userId) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (Math.random() > 0.1) {
+                const tasks = tasksData.filter(task => task.userId === userId);
+                resolve(tasks);
+            } else {
+                reject("Error fetching tasks");
+            }
+        }, 1000);
+    });
+}
+
+async function fetchUserAndTasks() {
+    try {
+        const user = await getUserDataAsync();
+        console.log("User:", user);
+        const tasks = await getUserTasksAsync(user.id);
+        console.log("Tasks:", tasks);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Invoke using async/await
+fetchUserAndTasks();
+
